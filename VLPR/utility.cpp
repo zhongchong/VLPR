@@ -242,6 +242,11 @@ cv::Mat getLocation(cv::Mat image,cv::Mat original)
 	return car;
 }
 
+void charDiv(cv::Mat image)
+{
+
+}
+
 //Sobelº¯Êý½øÐÐ±ßÔµ¼ì²â
 cv::Mat Sobel(const cv::Mat& image)
 {

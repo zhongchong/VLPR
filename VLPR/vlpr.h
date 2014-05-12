@@ -51,6 +51,7 @@ private:
 	QAction *thresAction;//二值化
 	QAction *morphologyAction;//数学形态学处理
 	QAction *locateAction;//定位车牌
+	QAction *charCutAction;//字符分割
 
 	QMenu *fileMenu;
 	QMenu *preDeal;
@@ -85,6 +86,7 @@ private slots:
 	void dilateErode();
 	void on_blur_clicked();
 	void on_locate_clicked();
+	void on_charCut_clicked();
 };
 
 #endif // VLPR_H

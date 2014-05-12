@@ -171,6 +171,12 @@ void VLPR::on_locate_clicked()
 	showImg(label2,MatToQImage(car));
 }
 
+//字符分割
+void VLPR::on_charCut_clicked()
+{
+	charDiv(car);
+}
+
 void VLPR::createActions() {
     // QAction: 一建立, 二设置属性, 如图标, 快捷键, 事件处理.
     openAction = new QAction("打开", this);
@@ -191,6 +197,8 @@ void VLPR::createActions() {
 	QObject::connect(blurAction,SIGNAL(triggered()), this, SLOT(on_blur_clicked()));
 	locateAction = new QAction("定位车牌",this);
 	QObject::connect(locateAction,SIGNAL(triggered()),this,SLOT(on_locate_clicked()));
+	charCutAction = new QAction("字符分割",this);
+	QObject::connect(charCutAction,SIGNAL(triggered()),this,SLOT(on_charCut_clicked()));
 }
 
 void VLPR::createMenus() {
@@ -218,6 +226,7 @@ void VLPR::createMenus() {
 
 	//字符分割菜单
 	divMenu = menuBar()->addMenu("字符分割");
+	divMenu->addAction(charCutAction);
 
 	//字符识别菜单
 	charRecoMenu = menuBar()->addMenu("字符识别");
