@@ -68,33 +68,9 @@ private:
 	QScrollArea *scrollArea2;
 	QLabel *label2;
 
-	QGroupBox *groupBox_01;
-	QScrollArea *scrollArea_01;
-	QLabel *label_01;
-
-	QGroupBox *groupBox_02;
-	QScrollArea *scrollArea_02;
-	QLabel *label_02;
-
-	QGroupBox *groupBox_03;
-	QScrollArea *scrollArea_03;
-	QLabel *label_03;
-
-	QGroupBox *groupBox_04;
-	QScrollArea *scrollArea_04;
-	QLabel *label_04;
-
-	QGroupBox *groupBox_05;
-	QScrollArea *scrollArea_05;
-	QLabel *label_05;
-
-	QGroupBox *groupBox_06;
-	QScrollArea *scrollArea_06;
-	QLabel *label_06;
-
-	QGroupBox *groupBox_07;
-	QScrollArea *scrollArea_07;
-	QLabel *label_07;
+	QGroupBox *groupBox_char[7];
+	QScrollArea *scrollArea_char[7];
+	QLabel *label_char[7];
 
 	QTextEdit *logEdit;
 	QScrollArea *scrollArea3;

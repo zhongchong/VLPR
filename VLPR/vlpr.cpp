@@ -32,6 +32,7 @@ VLPR::VLPR(QWidget *parent, Qt::WFlags flags)
 	cenWidget = new QWidget(this);
 	setCentralWidget(cenWidget);
 
+	//原始图片显示窗口
 	groupBox1 = new QGroupBox("原始图片",cenWidget);
 	groupBox1->setGeometry(x*0.01,y*0.01,x*0.5,y*0.6);
 	scrollArea1 = new QScrollArea(groupBox1);
@@ -42,6 +43,7 @@ VLPR::VLPR(QWidget *parent, Qt::WFlags flags)
 	label1 = new QLabel(scrollArea1);
 	scrollArea1->setWidget(label1);
 
+	//目标车牌显示窗口
 	groupBox2 = new QGroupBox("目标车牌",cenWidget);
 	groupBox2->setGeometry(x*0.57,y*0.05,x*0.35,y*0.3);
 	scrollArea2 = new QScrollArea(groupBox2);
@@ -52,6 +54,25 @@ VLPR::VLPR(QWidget *parent, Qt::WFlags flags)
 	scrollArea2->setBackgroundRole(QPalette::Dark);
 	scrollArea2->setWidget(label2);
 
+	//车牌字符
+	int pos_x = x*0.53;
+	QString char_name[] = {"省份简称","地市代码","字符一","字符二","字符三","字符四"
+		,"字符五"};
+	for(int i=0; i < 7 ;++i)
+	{
+		groupBox_char[i] = new QGroupBox(char_name[i], cenWidget);
+		groupBox_char[i]->setGeometry(pos_x, y*0.4, x*0.06, y*0.16);
+		scrollArea_char[i] = new QScrollArea(groupBox_char[i]);
+		scrollArea_char[i]->resize(groupBox_char[i]->width()*0.75, groupBox_char[i]->height()*0.75);
+		scrollArea_char[i]->move( (groupBox_char[i]->width()-scrollArea_char[i]->width())/2, 
+			(groupBox_char[i]->height()-scrollArea_char[i]->height())/2 );
+		label_char[i] = new QLabel(scrollArea_char[i]);
+		scrollArea_char[i]->setBackgroundRole(QPalette::Dark);
+		scrollArea_char[i]->setWidget(label_char[i]);
+		pos_x+=x*0.066;
+	}
+
+	//输出窗口
 	scrollArea3 = new QScrollArea(cenWidget);
 	scrollArea3->resize(x*0.5,y*0.3);
 	scrollArea3->move(x*0.01,y*0.65);
