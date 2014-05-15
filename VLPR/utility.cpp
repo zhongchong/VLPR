@@ -138,7 +138,7 @@ int max(int a, int b)
 	return a>b?a:b;
 }
 
-//投影法车牌定位
+//基于边缘检测和投影法的车牌定位
 cv::Mat getLocation(cv::Mat image,cv::Mat original)
 {
 	cv::Mat car = cv::Mat(image.rows,image.cols,image.type());
@@ -147,7 +147,6 @@ cv::Mat getLocation(cv::Mat image,cv::Mat original)
 	int *num = new int[max(image.cols, image.rows)]; //定位数组
 	QFile file("../log/log.txt");
 	QTextStream stream(&file);
-
 	file.open(QIODevice::WriteOnly); //open log file
 
 	for(int i=0;i<image.rows;++i)
@@ -239,12 +238,123 @@ cv::Mat getLocation(cv::Mat image,cv::Mat original)
 	}
 	
 	file.close();
+	resize(car,car,cv::Size(440,140));
 	return car;
 }
 
-void charDiv(cv::Mat image)
+//基于先验知识和投影法的字符分割
+void charDiv(cv::Mat image,cv::Mat car_char[])
 {
+	//预处理工作
+	image = cvtImg(image);
+	image = gaussian(image);
+	thres(image);
 
+	//初始化输出文本
+	QFile file("../log/log.txt");
+	QTextStream stream(&file);
+	file.open(QIODevice::WriteOnly);
+
+	int *num1 = new int[image.rows]; //水平投影数组
+	int *num2 = new int[image.cols]; //垂直投影数组
+	
+	//去上下边框和铆钉
+	int up=0, down=139;
+	for(int i = image.rows; i >= 0; --i)
+	{
+		int count = 0, count_max=0;
+		for(int j=0; j < image.cols; ++j)
+		{
+			//stream<<getElement(image,i,j)<<" ";
+			if(getElement(image,i,j) == 255)
+			{
+				if(count > count_max)
+					count_max = count;
+				count = 0;
+			}
+			else if(getElement(image,i,j) == 0)
+				count++;
+		}
+		num1[i] = count_max;
+		//stream<<count_max<<"\n";
+		//stream<<"\n";
+	}
+	for(int i=70; i >= 0 ; --i)
+		if(num1[i] > 100)
+		{
+			up = i-5;
+			break;
+		}
+	for(int i=70; i<140; ++i)
+		if(num1[i] > 100)
+		{
+			down = i+5;
+			break;
+		}
+	image=image.rowRange(up,down);
+
+	//搜索字符二
+	int left=0,right=0,point;
+	for(int i = 0; i < image.cols; ++i)
+	{
+		num2[i] = 0;
+		for(int j = 0; j < image.rows; ++j)
+		{
+			num2[i]+=getElement(image,j,i)/255;
+		}
+		//stream<<"i="<<i<<"  "<<num2[i]<<"\n";
+	}
+	point = 125;
+	while( !(num2[point] > 0) )
+		--point;
+	right=point;
+	point-=44;
+	while( !(num2[point]==0) )
+		--point;
+	left=point+1;
+	car_char[1]=image.colRange(left,right);
+
+	//搜索第一个字符
+	point-=10;
+	for(;point>=0 && num2[point]<=0; --point);
+	right=point;
+	point-=44;
+	for(;point>=0 && num2[point]>0;--point);
+	left=point+1;
+	car_char[0]=image.colRange(left,right);
+
+	//搜索第三个字符字符
+	for(point = 145; point<image.cols && num2[point] <= 0 ; ++point);
+	left=point;
+	for(point+=44; point<image.cols && num2[point]>0; ++point);
+	right=point-1;
+	point=right+11;
+	car_char[2]=image.colRange(left,right);
+	
+	//搜索第四个到第七个字符
+	for(int i=0; i < 4 && point <image.cols; ++i)
+	{
+		for(; point<image.cols && num2[point] <= 0 ; ++point);
+		left=point;
+		for(point+=44; point<image.cols && num2[point]>0; ++point);
+		right=point-1;
+		point=right+11;
+		car_char[3+i]=image.colRange(left,right);
+	}
+
+	stream<<car_char[1].rows<<" "<<car_char[1].cols;
+	//字符归一化90*45
+	for (int i=0;i<7;++i)
+	{
+		resize(car_char[i],car_char[i],cv::Size(45,90));
+	}
+
+	//测试窗口
+	//cvNamedWindow("测试图片",-1);
+	//imshow("测试图片",car_char[6]);
+
+	//关闭文件
+	file.close();
 }
 
 //Sobel函数进行边缘检测

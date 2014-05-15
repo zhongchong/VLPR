@@ -19,7 +19,7 @@ extern cv::Mat gaussian(cv::Mat image);
 extern int getElement(cv::Mat image,int i,int j);
 extern bool setElement(cv::Mat image,int i,int j,int val);
 extern cv::Mat getLocation(cv::Mat image,cv::Mat original);
-extern void charDiv(cv::Mat image);
+extern void charDiv(cv::Mat image,cv::Mat car_char[]);
 
 //inner function
 void getThres(cv::Mat image,int t,int& res);

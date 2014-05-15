@@ -1,2 +1,1 @@
-plate_n=59 plate_s=141 wide=83
-plate_w=84 plate_e=343 length=260
+95 44

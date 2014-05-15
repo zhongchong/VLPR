@@ -34,13 +34,7 @@ private:
 	cv::Mat image; //输入图片
 	cv::Mat gray; //灰度图
 	cv::Mat car; //车牌区域
-	cv::Mat charOne; //省份字符
-	cv::Mat charTwo; //地级市字符
-	cv::Mat charThree; //牌照字符一
-	cv::Mat charFour; //牌照字符二
-	cv::Mat charFive; //牌照字符三
-	cv::Mat charSix; //牌照字符四
-	cv::Mat charSeven; //牌照字符五
+	cv::Mat car_char[7]; //省份字符
 
 	QAction *openAction;//打开图片
 	QAction *quitAction;//退出系统

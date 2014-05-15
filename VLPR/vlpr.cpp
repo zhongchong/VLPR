@@ -61,7 +61,7 @@ VLPR::VLPR(QWidget *parent, Qt::WFlags flags)
 	for(int i=0; i < 7 ;++i)
 	{
 		groupBox_char[i] = new QGroupBox(char_name[i], cenWidget);
-		groupBox_char[i]->setGeometry(pos_x, y*0.4, x*0.06, y*0.16);
+		groupBox_char[i]->setGeometry(pos_x, y*0.4, x*0.06, y*0.2);
 		scrollArea_char[i] = new QScrollArea(groupBox_char[i]);
 		scrollArea_char[i]->resize(groupBox_char[i]->width()*0.75, groupBox_char[i]->height()*0.75);
 		scrollArea_char[i]->move( (groupBox_char[i]->width()-scrollArea_char[i]->width())/2, 
@@ -174,7 +174,9 @@ void VLPR::on_locate_clicked()
 //×Ö·û·Ö¸î
 void VLPR::on_charCut_clicked()
 {
-	charDiv(car);
+	charDiv(car,car_char);
+	for(int i = 0; i < 7; ++i)
+		showImg(label_char[i],MatToQImage(car_char[i]));
 }
 
 void VLPR::createActions() {
