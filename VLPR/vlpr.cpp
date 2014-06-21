@@ -179,6 +179,14 @@ void VLPR::on_charCut_clicked()
 		showImg(label_char[i],MatToQImage(car_char[i]));
 }
 
+//字符识别
+void VLPR::on_charRec_licked()
+{
+	QString res;
+	res=charRec(car_char);
+	updateLog("牌照识别结果："+res);
+}
+
 void VLPR::createActions() {
     // QAction: 一建立, 二设置属性, 如图标, 快捷键, 事件处理.
     openAction = new QAction("打开", this);
@@ -201,6 +209,8 @@ void VLPR::createActions() {
 	QObject::connect(locateAction,SIGNAL(triggered()),this,SLOT(on_locate_clicked()));
 	charCutAction = new QAction("字符分割",this);
 	QObject::connect(charCutAction,SIGNAL(triggered()),this,SLOT(on_charCut_clicked()));
+	charRecAction = new QAction("字符识别",this);
+	QObject::connect(charRecAction,SIGNAL(triggered()),this,SLOT(on_charRec_licked()));
 }
 
 void VLPR::createMenus() {
@@ -232,4 +242,5 @@ void VLPR::createMenus() {
 
 	//字符识别菜单
 	charRecoMenu = menuBar()->addMenu("字符识别");
+	charRecoMenu->addAction(charRecAction);
 }

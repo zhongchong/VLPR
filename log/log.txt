@@ -1,1 +1,2 @@
-95 44
+plate_n=293 plate_s=391 wide=99
+plate_w=153 plate_e=463 length=311

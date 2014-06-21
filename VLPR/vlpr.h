@@ -46,6 +46,7 @@ private:
 	QAction *morphologyAction;//数学形态学处理
 	QAction *locateAction;//定位车牌
 	QAction *charCutAction;//字符分割
+	QAction *charRecAction;//字符识别
 
 	QMenu *fileMenu;
 	QMenu *preDeal;
@@ -81,6 +82,7 @@ private slots:
 	void on_blur_clicked();
 	void on_locate_clicked();
 	void on_charCut_clicked();
+	void on_charRec_licked();
 };
 
 #endif // VLPR_H

@@ -20,7 +20,7 @@ int main(int argc, char *argv[])
 	}
 
 	//中文处理
-	QTextCodec::setCodecForLocale(QTextCodec::codecForName("GBK"));
+	QTextCodec::setCodecForLocale(QTextCodec::codecForName("gbk"));
 	QTextCodec::setCodecForTr(QTextCodec::codecForLocale());
 	QTextCodec::setCodecForCStrings(QTextCodec::codecForLocale());
 

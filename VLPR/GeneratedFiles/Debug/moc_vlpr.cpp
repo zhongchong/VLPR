@@ -22,7 +22,7 @@ static const uint qt_meta_data_VLPR[] = {
        6,       // revision
        0,       // classname
        0,    0, // classinfo
-       9,   14, // methods
+      10,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -39,6 +39,7 @@ static const uint qt_meta_data_VLPR[] = {
      128,    5,    5,    5, 0x08,
      146,    5,    5,    5, 0x08,
      166,    5,    5,    5, 0x08,
+     187,    5,    5,    5, 0x08,
 
        0        // eod
 };
@@ -49,6 +50,7 @@ static const char qt_meta_stringdata_VLPR[] = {
     "on_edgeDetect_clicked()\0on_thres_clicked()\0"
     "dilateErode()\0on_blur_clicked()\0"
     "on_locate_clicked()\0on_charCut_clicked()\0"
+    "on_charRec_licked()\0"
 };
 
 void VLPR::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, void **_a)
@@ -66,6 +68,7 @@ void VLPR::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, void *
         case 6: _t->on_blur_clicked(); break;
         case 7: _t->on_locate_clicked(); break;
         case 8: _t->on_charCut_clicked(); break;
+        case 9: _t->on_charRec_licked(); break;
         default: ;
         }
     }
@@ -104,9 +107,9 @@ int VLPR::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 9)
+        if (_id < 10)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 9;
+        _id -= 10;
     }
     return _id;
 }

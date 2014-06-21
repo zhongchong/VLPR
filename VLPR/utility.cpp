@@ -347,6 +347,7 @@ void charDiv(cv::Mat image,cv::Mat car_char[])
 	for (int i=0;i<7;++i)
 	{
 		resize(car_char[i],car_char[i],cv::Size(45,90));
+		thres(car_char[i]);
 	}
 
 	//测试窗口
@@ -355,6 +356,156 @@ void charDiv(cv::Mat image,cv::Mat car_char[])
 
 	//关闭文件
 	file.close();
+}
+
+//投影特征曲线匹配
+int pro_char_Rec(cv::Mat A,cv::Mat B)
+{
+		int sum=0, count=0;
+
+		//匹配水平投影
+		for(int i=0; i < 90; ++i)
+		{
+			count=0;
+			for(int j=0; j < 45; ++j)
+			{
+				count+=( getElement(A,i,j)-getElement(B,i,j) )/255;
+			}
+			sum+=qAbs(count);
+		}
+
+		//匹配垂直投影
+		for(int i=0; i < 45; ++i)
+		{
+			count=0;
+			for(int j=0; j < 90; ++j)
+			{
+				count+=( getElement(A,j,i)-getElement(B,j,i) )/255;
+			}
+			sum+=qAbs(count);
+		}
+		return sum;
+	
+}
+
+//模板匹配
+int std_char_Rec(cv::Mat A,cv::Mat B)
+{
+	int sum=0;
+	for(int i=0;i<45;++i)
+		for(int j=0;j<90;++j)
+		{
+			if( getElement(A,i,j) != getElement(B,i,j) )
+				sum++;
+		}
+	return sum;
+}
+
+void img_show(cv::Mat image)
+{
+	//初始化输出文本
+	QFile file("../log/image.txt");
+	QTextStream stream(&file);
+	file.open(QIODevice::WriteOnly);
+
+	for(int i=0;i<image.rows;++i)
+	{
+		for(int j=0;j<image.cols;++j)
+		{
+			stream<<getElement(image,i,j)<<" ";
+		}
+		stream<<"\n";
+	}
+
+	file.close();
+}
+
+QString charRec(cv::Mat car_char[])
+{
+	//初始化输出文本
+	QFile file("../log/log.txt");
+	QTextStream stream(&file);
+	file.open(QIODevice::WriteOnly);
+	QString res="";
+
+	for(int char_num=0;char_num<7;++char_num)
+	{
+		QString car_ch="?";
+		int minValue=45*90*2, sum=0;
+
+		//匹配字母
+		for(int i=0;char_num != 0 && i<26;++i)
+		{
+				QString fileDir = "./StandardFont/";
+				QChar ch = 'A'+i;
+				fileDir.append(ch);
+				fileDir.append(".bmp");
+				cv::Mat fontImage = cv::imread(fileDir.toStdString() );
+				resize(fontImage,fontImage,cv::Size(45,90));
+				fontImage = cvtImg(fontImage);
+				thres(fontImage);
+				sum=0;
+				sum=pro_char_Rec(fontImage,car_char[char_num])+std_char_Rec(fontImage,car_char[char_num]);
+				if(sum < minValue)
+				{
+					minValue = sum;
+					car_ch = QString('A'+i);
+				}
+				//stream<<QChar('A'+i)<<" "<<sum<<"\n";
+		}
+
+		//匹配数字
+		for(int i = 0;char_num != 0 && char_num != 1 && i < 10; ++i)
+		{
+			QString fileDir = "./StandardFont/";
+			QChar ch = '0'+i;
+			fileDir.append(ch);
+			fileDir.append(".bmp");
+			cv::Mat fontImage = cv::imread(fileDir.toStdString() );
+			resize(fontImage,fontImage,cv::Size(45,90));
+			fontImage = cvtImg(fontImage);
+			thres(fontImage);
+			sum=0;
+			sum=pro_char_Rec(fontImage,car_char[char_num])+std_char_Rec(fontImage,car_char[char_num]);
+			if(sum < minValue)
+			{
+				minValue = sum;
+				car_ch = QString('0'+i);
+			}
+			//stream<<QChar('0'+i)<<" "<<sum<<'\n';
+		}
+
+		//匹配汉子
+		QString cn[31] = {"桂","贵","冀","吉","京","琼","陕","苏","湘","豫","渝","澳","藏"
+		,"川","鄂","甘","赣","黑","沪","津","晋","鲁","蒙","闽","宁","青","皖","新","云","浙","使"};
+		for(int i=0;char_num == 0 && i<31 ;++i)
+		{
+			QString fileDir = "./StandardFont/";
+			fileDir.append(cn[i]);
+			fileDir.append(".bmp");
+			cv::Mat fontImage = cv::imread(fileDir.toStdString() );
+			resize(fontImage,fontImage,cv::Size(45,90));
+			fontImage = cvtImg(fontImage);
+			thres(fontImage);
+			sum=0;
+			sum=pro_char_Rec(fontImage,car_char[char_num])+std_char_Rec(fontImage,car_char[char_num]);
+			if(sum < minValue)
+			{
+				minValue = sum;
+				car_ch = cn[i];
+			}
+			//stream<<cn[i].at(0)<<" "<<sum<<'\n';
+		}
+		res.append(car_ch);
+		//输出识别结果
+		//stream<<car_ch<<endl;
+		//stream<<QString("识别结果")<<char_num<<" "<<car_ch<<"\n";
+	}
+	stream<<res;
+
+	//关闭文件
+	file.close();
+	return res;
 }
 
 //Sobel函数进行边缘检测
