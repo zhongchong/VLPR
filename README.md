@@ -5,7 +5,7 @@ Project Name: Vehicle License Plate Recognition
 Author: Zhong Chong
 Date: 2014-5-12
 Version: 1.0
-License: GPL
+License: GPL v2.0
 
 开发工具: 
     Visual Studio 2008
