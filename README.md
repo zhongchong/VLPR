@@ -15,4 +15,4 @@ License: GPL v2.0
     OpenCV >= 2.3
 
 运行环境:
-    Win7 x64
+    Win7 x86
